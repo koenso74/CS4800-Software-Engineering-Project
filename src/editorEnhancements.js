@@ -32,6 +32,8 @@ function installLanguagePicker() {
   label.dataset.enhanced = 'true';
   const select = document.createElement('select');
   select.className = 'language-select';
+  select.setAttribute('aria-label', 'Programming language');
+  select.title = 'Choose a programming language';
   languages.forEach(([value, text]) => {
     const option = document.createElement('option');
     option.value = value;
