@@ -74,7 +74,9 @@ document.addEventListener('click', async event => {
     let resultBox = document.querySelector('.editor-actions + .result');
     if (!resultBox) { resultBox = document.createElement('div'); resultBox.className = 'result'; document.querySelector('.editor-actions')?.after(resultBox); }
     resultBox.className = `result ${result.passed ? 'success' : ''}`;
-    resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}`;
+    const cases = result.cases?.length ? `<div class="test-cases"><strong>Test cases</strong>${result.cases.map(test => `<div class="test-case"><span class="case-status ${test.passed === false ? 'failed' : 'passed'}">${test.passed === false ? '×' : '✓'}</span><code>${test.input}</code><span>→ ${test.expected}</span></div>`).join('')}</div>` : '';
+    const output = result.output ? `<pre class="runner-output">${result.output}</pre>` : '';
+    resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}${cases}${output}`;
   } catch { window.alert('The code runner is unavailable. Please try again in a moment.'); }
   button.disabled = false;
   button.firstChild.textContent = 'Run code ';

@@ -22,3 +22,4 @@ main:has(.hero){height:calc(100vh - 80px);overflow:hidden;display:flex;flex-dire
 main:has(.hero) .hero{flex:1;width:100%;padding-top:44px;padding-bottom:44px}
 main:has(.hero) .feature-row{padding-top:28px;padding-bottom:28px}
 @media(max-width:760px){main:has(.hero){height:auto;min-height:calc(100vh - 80px);overflow:visible}main:has(.hero) .hero{padding:55px 22px;display:block}main:has(.hero) .feature-row{padding:35px 22px}}
+.result{flex-wrap:wrap;gap:10px}.test-cases{width:100%;border-top:1px solid currentColor;padding-top:12px;margin-top:3px}.test-cases strong{display:block;margin-bottom:7px}.test-case{display:flex;gap:8px;align-items:center;font-size:12px;margin:5px 0}.test-case code{font-family:'DM Mono';background:#ffffff88;padding:2px 5px;border-radius:4px}.case-status{font-weight:700}.case-status.failed{color:#b75d4a}.runner-output{width:100%;margin:4px 0 0;white-space:pre-wrap;font:12px 'DM Mono'}
