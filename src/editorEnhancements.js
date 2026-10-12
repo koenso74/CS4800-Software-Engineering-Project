@@ -92,7 +92,9 @@ document.addEventListener('click', async event => {
     resultBox.className = `result ${result.passed ? 'success' : ''}`;
     const cases = result.cases?.length ? `<div class="test-cases"><strong>Test cases</strong>${result.cases.map(test => `<div class="test-case"><span class="case-status ${test.passed === false ? 'failed' : 'passed'}">${test.passed === false ? '×' : '✓'}</span><code>${test.input}</code><span>→ ${test.expected}</span></div>`).join('')}</div>` : '';
     const output = result.output ? `<pre class="runner-output">${result.output}</pre>` : '';
-    resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}${cases}${output}`;
+    const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    const comparison = result.passed && result.solution ? `<details class="solution-comparison"><summary>Compare with an example solution</summary><p>${escapeHtml(result.explanation)}</p><pre>${escapeHtml(result.solution)}</pre></details>` : '';
+    resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests !== undefined ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}${cases}${output}${comparison}`;
   } catch { window.alert('The code runner is unavailable. Please try again in a moment.'); }
   button.disabled = false;
   button.firstChild.textContent = 'Run code ';
