@@ -56,3 +56,26 @@ document.addEventListener('keydown', event => {
 const observer = new MutationObserver(installLanguagePicker);
 observer.observe(document.body, { childList: true, subtree: true });
 installLanguagePicker();
+
+document.addEventListener('click', async event => {
+  const button = event.target.closest?.('.editor-actions .primary');
+  if (!button || !button.textContent.includes('Run code')) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  const editor = document.querySelector('.editor');
+  const language = document.querySelector('.language-select')?.value || 'javascript';
+  const slug = window.location.pathname.split('/').filter(Boolean).pop();
+  button.disabled = true;
+  button.dataset.originalLabel = button.textContent;
+  button.firstChild.textContent = 'Running… ';
+  try {
+    const response = await fetch('/api/submissions/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug, code: editor?.value || '', language }) });
+    const result = await response.json();
+    let resultBox = document.querySelector('.editor-actions + .result');
+    if (!resultBox) { resultBox = document.createElement('div'); resultBox.className = 'result'; document.querySelector('.editor-actions')?.after(resultBox); }
+    resultBox.className = `result ${result.passed ? 'success' : ''}`;
+    resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}`;
+  } catch { window.alert('The code runner is unavailable. Please try again in a moment.'); }
+  button.disabled = false;
+  button.firstChild.textContent = 'Run code ';
+}, true);
