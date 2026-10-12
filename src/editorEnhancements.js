@@ -1,7 +1,7 @@
 const templates = {
   javascript: 'function solve(input) {\n  // your code here\n}',
-  python: 'def solve(input):\n    # your code here\n    pass',
-  java: 'class Solution {\n    public static Object solve(Object input) {\n        // your code here\n        return null;\n    }\n}',
+  python: 'def solve(input):\n    # your code here\n    return input\n\nprint(solve("CodeClimb"))',
+  java: 'public class Main {\n    public static void main(String[] args) {\n        // your code here\n        System.out.println("CodeClimb");\n    }\n}',
   cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // your code here\n    return 0;\n}'
 };
 
