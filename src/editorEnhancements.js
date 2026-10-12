@@ -1,0 +1,58 @@
+const templates = {
+  javascript: 'function solve(input) {\n  // your code here\n}',
+  python: 'def solve(input):\n    # your code here\n    pass',
+  java: 'class Solution {\n    public static Object solve(Object input) {\n        // your code here\n        return null;\n    }\n}',
+  cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // your code here\n    return 0;\n}'
+};
+
+const languages = [
+  ['javascript', 'JavaScript'],
+  ['python', 'Python'],
+  ['java', 'Java'],
+  ['cpp', 'C++']
+];
+
+function installLanguagePicker() {
+  const label = document.querySelector('.editor-head .language');
+  const editor = document.querySelector('.editor');
+  if (!label || !editor || label.dataset.enhanced) return;
+  label.dataset.enhanced = 'true';
+  const select = document.createElement('select');
+  select.className = 'language-select';
+  languages.forEach(([value, text]) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = text;
+    select.appendChild(option);
+  });
+  select.addEventListener('change', () => {
+    editor.value = templates[select.value];
+    editor.dispatchEvent(new Event('input', { bubbles: true }));
+    editor.focus();
+  });
+  label.replaceWith(select);
+}
+
+document.addEventListener('keydown', event => {
+  const editor = event.target.closest?.('.editor');
+  if (!editor || event.key !== 'Tab') return;
+  event.preventDefault();
+  const start = editor.selectionStart;
+  const end = editor.selectionEnd;
+  const value = editor.value;
+  if (event.shiftKey && start === end && start > 0) {
+    const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+    if (value.slice(lineStart, start).startsWith('  ')) {
+      editor.value = value.slice(0, lineStart) + value.slice(lineStart + 2);
+      editor.selectionStart = editor.selectionEnd = start - 2;
+    }
+    return;
+  }
+  editor.value = value.slice(0, start) + '  ' + value.slice(end);
+  editor.selectionStart = editor.selectionEnd = start + 2;
+  editor.dispatchEvent(new Event('input', { bubbles: true }));
+});
+
+const observer = new MutationObserver(installLanguagePicker);
+observer.observe(document.body, { childList: true, subtree: true });
+installLanguagePicker();

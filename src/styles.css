@@ -15,6 +15,7 @@ body{font-size:17px}
 .run-note,.side-section small{font-size:13px}
 .hint{font-size:14px}
 .switch{font-size:13px}
+.language-select{font:11px 'DM Mono';color:#8e9c90;background:transparent;border:0;outline:0;cursor:pointer}
 
 /* Keep the desktop landing page contained in one viewport. */
 main:has(.hero){height:calc(100vh - 80px);overflow:hidden;display:flex;flex-direction:column}
