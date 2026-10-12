@@ -5,6 +5,19 @@ const templates = {
   cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    // your code here\n    return 0;\n}'
 };
 
+const problemTemplates = {
+  'sum-of-array': {
+    javascript: 'function sumArray(nums) {\n  // your code here\n  return 0;\n}\n\nconsole.log(sumArray([1, 2, 3]));',
+    python: 'def sum_array(nums):\n    # your code here\n    return 0\n\nprint(sum_array([1, 2, 3]))',
+    java: 'public class Main {\n    static int sumArray(int[] nums) {\n        // your code here\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(sumArray(new int[]{1, 2, 3}));\n    }\n}',
+    cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint sumArray(const vector<int>& nums) {\n    // your code here\n    return 0;\n}\n\nint main() {\n    cout << sumArray({1, 2, 3}) << endl;\n    return 0;\n}'
+  }
+};
+
+function templateFor(slug, language) {
+  return problemTemplates[slug]?.[language] || templates[language];
+}
+
 const languages = [
   ['javascript', 'JavaScript'],
   ['python', 'Python'],
@@ -26,7 +39,8 @@ function installLanguagePicker() {
     select.appendChild(option);
   });
   select.addEventListener('change', () => {
-    editor.value = templates[select.value];
+    const slug = window.location.pathname.split('/').filter(Boolean).pop();
+    editor.value = templateFor(slug, select.value);
     editor.dispatchEvent(new Event('input', { bubbles: true }));
     editor.focus();
   });
