@@ -18,7 +18,7 @@ const problems = [
 let db;
 let dbAttempt;
 const demoUsers = new Map();
-async function getDb() { if (db) return db; if (!process.env.MONGODB_URI) return null; if (dbAttempt) return dbAttempt; const client = new MongoClient(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 1500, connectTimeoutMS: 1500 }); dbAttempt = client.connect().then(() => { db = client.db(process.env.MONGODB_DB || 'codeclimb'); return db; }).catch(() => null); return dbAttempt; }
+async function getDb() { if (db) return db; if (!process.env.MONGODB_URI) return null; if (dbAttempt) return dbAttempt; const client = new MongoClient(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 8000, connectTimeoutMS: 8000, maxPoolSize: 5 }); dbAttempt = client.connect().then(() => { db = client.db(process.env.MONGODB_DB || 'codeclimb'); return db; }).catch(error => { dbAttempt = null; console.error('MongoDB connection failed:', error.name, error.message); return null; }); return dbAttempt; }
 const sign = user => jwt.sign({id:user._id.toString(),email:user.email,name:user.name}, process.env.JWT_SECRET || 'dev-secret');
 const auth = (req,res,next) => { try { const token=(req.headers.authorization||'').replace('Bearer ',''); req.user=jwt.verify(token,process.env.JWT_SECRET||'dev-secret'); next(); } catch { res.status(401).json({message:'Please log in to continue.'}); } };
 const visibleCases = { 'sum-of-array': [['[1, 2, 3]', '6'], ['[]', '0'], ['[5]', '5'], ['[-1, 1, 0]', '0']], 'reverse-a-string': [['"code"', '"edoc"'], ['""', '""'], ['"hello"', '"olleh"']], 'fizzbuzz-simple': [['5', '[1, 2, "Fizz", 4, "Buzz"]']], 'find-maximum': [['[1, 4, 2]', '4'], ['[-5, -2, -9]', '-2']], 'palindrome-check': [['"racecar"', 'true'], ['"hello"', 'false']] };
