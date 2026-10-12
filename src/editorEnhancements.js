@@ -85,7 +85,7 @@ document.addEventListener('click', async event => {
   button.dataset.originalLabel = button.textContent;
   button.firstChild.textContent = 'Running… ';
   try {
-    const response = await fetch('/api/submissions/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug, code: editor?.value || '', language }) });
+    const response = await fetch('/api/submissions/run', { method: 'POST', headers: { 'Content-Type': 'application/json', ...(localStorage.getItem('cc_token') ? { Authorization: `Bearer ${localStorage.getItem('cc_token')}` } : {}) }, body: JSON.stringify({ slug, code: editor?.value || '', language }) });
     const result = await response.json();
     let resultBox = document.querySelector('.editor-actions + .result');
     if (!resultBox) { resultBox = document.createElement('div'); resultBox.className = 'result'; document.querySelector('.editor-actions')?.after(resultBox); }
