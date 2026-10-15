@@ -1,5 +1,6 @@
 import test, { before, after } from 'node:test';
 import assert from 'node:assert/strict';
+import { problems as sharedProblems } from '../shared/problems.js';
 
 process.env.VERCEL = '1';
 process.env.NODE_ENV = 'test';
@@ -51,6 +52,12 @@ test('filters the ten-problem catalog by difficulty', async () => {
   assert.ok(result.data.length >= 3);
   assert.ok(result.data.every(problem => problem.difficulty === 'Intermediate'));
   assert.ok(result.data.every(problem => !problem.solution && !problem.explanation && !problem.hints));
+});
+
+test('serves every problem from the shared catalog', async () => {
+  const result = await request('/api/problems');
+  assert.equal(result.response.status, 200);
+  assert.deepEqual(result.data.map(problem => problem.slug), sharedProblems.map(problem => problem.slug));
 });
 
 test('does not expose solutions and returns visible cases for empty submissions', async () => {

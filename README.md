@@ -27,7 +27,7 @@ Run the API checks with:
 npm test
 ```
 
-The tests cover registration, login failures, protected progress, and problem filtering. They use the in-memory demo store and do not require MongoDB.
+The tests cover registration, login failures, protected progress, problem filtering, catalog consistency, solution privacy, and editor workflow contracts. They use the in-memory demo store and do not require MongoDB. A real browser runner should be added when the project adopts Playwright or another browser test dependency.
 
 ## Vercel
 
