@@ -52,3 +52,19 @@ test('filters the ten-problem catalog by difficulty', async () => {
   assert.ok(result.data.every(problem => problem.difficulty === 'Intermediate'));
   assert.ok(result.data.every(problem => !problem.solution && !problem.explanation && !problem.hints));
 });
+
+test('does not expose solutions and returns visible cases for empty submissions', async () => {
+  const detail = await request('/api/problems/sum-of-array');
+  assert.equal(detail.response.status, 200);
+  assert.equal(detail.data.solution, undefined);
+  assert.ok(Array.isArray(detail.data.hints));
+
+  const run = await request('/api/submissions/run', {
+    method: 'POST',
+    body: JSON.stringify({ slug: 'sum-of-array', language: 'python', code: 'def sum_array(nums):\n    pass\n\n# your code here' })
+  });
+  assert.equal(run.response.status, 200);
+  assert.equal(run.data.passed, false);
+  assert.equal(run.data.total, 4);
+  assert.equal(run.data.tests, 0);
+});

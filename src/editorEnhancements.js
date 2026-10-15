@@ -11,7 +11,16 @@ const problemTemplates = {
     python: 'def sum_array(nums):\n    # your code here\n    return 0\n\nprint(sum_array([1, 2, 3]))',
     java: 'public class Main {\n    static int sumArray(int[] nums) {\n        // your code here\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(sumArray(new int[]{1, 2, 3}));\n    }\n}',
     cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint sumArray(const vector<int>& nums) {\n    // your code here\n    return 0;\n}\n\nint main() {\n    cout << sumArray({1, 2, 3}) << endl;\n    return 0;\n}'
-  }
+  },
+  'reverse-a-string': { python: 'def reverse_string(text):\n    # your code here\n    return ""\n\nprint(reverse_string("code"))' },
+  'fizzbuzz-simple': { python: 'def fizz_buzz(n):\n    # your code here\n    return []\n\nprint(fizz_buzz(5))' },
+  'find-maximum': { python: 'def find_max(nums):\n    # your code here\n    return 0\n\nprint(find_max([1, 4, 2]))' },
+  'palindrome-check': { python: 'def is_palindrome(text):\n    # your code here\n    return False\n\nprint(is_palindrome("racecar"))' },
+  'count-vowels': { python: 'def count_vowels(text):\n    # your code here\n    return 0\n\nprint(count_vowels("CodeClimb"))' },
+  factorial: { python: 'def factorial(n):\n    # your code here\n    return 1\n\nprint(factorial(5))' },
+  'count-words': { python: 'def count_words(sentence):\n    # your code here\n    return 0\n\nprint(count_words("learn code daily"))' },
+  'remove-duplicates': { python: 'def remove_duplicates(nums):\n    # your code here\n    return []\n\nprint(remove_duplicates([1, 2, 2, 3, 1]))' },
+  'two-sum': { python: 'def two_sum(nums, target):\n    # your code here\n    return []\n\nprint(two_sum([2, 7, 11, 15], 9))' }
 };
 
 function templateFor(slug, language) {
