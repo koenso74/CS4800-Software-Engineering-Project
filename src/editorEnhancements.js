@@ -36,9 +36,9 @@ const additionalLanguageTemplates = {
   'count-words': { java: 'public class Main {\n  static int countWords(String sentence) { return 0; }\n  public static void main(String[] args) { System.out.println(countWords("learn code daily")); }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\nint countWords(string sentence) { return 0; }\nint main() { cout << countWords("learn code daily") << endl; }' },
   'remove-duplicates': { java: 'import java.util.*;\npublic class Main {\n  static int[] removeDuplicates(int[] nums) { return new int[0]; }\n  public static void main(String[] args) { System.out.println(Arrays.toString(removeDuplicates(new int[]{1, 2, 2, 3, 1}))); }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\ntemplate<class T> void printVector(const vector<T>& v) { cout << "["; for (int i=0;i<v.size();i++) cout << (i?", ":"") << v[i]; cout << "]" << endl; }\nvector<int> removeDuplicates(const vector<int>& nums) { return {}; }\nint main() { printVector(removeDuplicates({1, 2, 2, 3, 1})); }' },
   'two-sum': { java: 'import java.util.*;\npublic class Main {\n  static int[] twoSum(int[] nums, int target) { return new int[0]; }\n  public static void main(String[] args) { System.out.println(Arrays.toString(twoSum(new int[]{2, 7, 11, 15}, 9))); }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\ntemplate<class T> void printVector(const vector<T>& v) { cout << "["; for (int i=0;i<v.size();i++) cout << (i?", ":"") << v[i]; cout << "]" << endl; }\nvector<int> twoSum(const vector<int>& nums, int target) { return {}; }\nint main() { printVector(twoSum({2, 7, 11, 15}, 9)); }' },
-  'linear-search': { java: 'public class Main { static int linearSearch(int[] nums, int target) { return -1; } public static void main(String[] args) { System.out.println(linearSearch(new int[]{4, 9, 2, 7}, 2)); } }', cpp: '#include <bits/stdc++.h>\nusing namespace std;\nint linearSearch(const vector<int>& nums, int target) { return -1; }\nint main() { cout << linearSearch({4, 9, 2, 7}, 2) << endl; }' },
-  'sum-of-digits': { java: 'public class Main { static int sumOfDigits(int n) { return 0; } public static void main(String[] args) { System.out.println(sumOfDigits(1234)); } }', cpp: '#include <bits/stdc++.h>\nusing namespace std;\nint sumOfDigits(int n) { return 0; }\nint main() { cout << sumOfDigits(1234) << endl; }' },
-  'valid-anagram': { java: 'public class Main { static boolean isAnagram(String first, String second) { return false; } public static void main(String[] args) { System.out.println(isAnagram("listen", "silent")); } }', cpp: '#include <bits/stdc++.h>\nusing namespace std;\nbool isAnagram(string first, string second) { return false; }\nint main() { cout << boolalpha << isAnagram("listen", "silent") << endl; }' }
+  'linear-search': { java: 'public class Main {\n    static int linearSearch(int[] nums, int target) {\n        // your code here\n        return -1;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(linearSearch(new int[]{4, 9, 2, 7}, 2));\n    }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint linearSearch(const vector<int>& nums, int target) {\n    // your code here\n    return -1;\n}\n\nint main() {\n    cout << linearSearch({4, 9, 2, 7}, 2) << endl;\n    return 0;\n}' },
+  'sum-of-digits': { java: 'public class Main {\n    static int sumOfDigits(int n) {\n        // your code here\n        return 0;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(sumOfDigits(1234));\n    }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nint sumOfDigits(int n) {\n    // your code here\n    return 0;\n}\n\nint main() {\n    cout << sumOfDigits(1234) << endl;\n    return 0;\n}' },
+  'valid-anagram': { java: 'public class Main {\n    static boolean isAnagram(String first, String second) {\n        // your code here\n        return false;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isAnagram("listen", "silent"));\n    }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nbool isAnagram(string first, string second) {\n    // your code here\n    return false;\n}\n\nint main() {\n    cout << boolalpha << isAnagram("listen", "silent") << endl;\n    return 0;\n}' }
 };
 
 function templateFor(slug, language) {
@@ -61,6 +61,9 @@ function installLanguagePicker() {
   select.className = 'language-select';
   select.setAttribute('aria-label', 'Programming language');
   select.title = 'Choose a programming language';
+  const slug = window.location.pathname.split('/').filter(Boolean).pop();
+  const languageKey = `cc_language_${slug}`;
+  select.value = localStorage.getItem(languageKey) || 'javascript';
   languages.forEach(([value, text]) => {
     const option = document.createElement('option');
     option.value = value;
@@ -68,7 +71,7 @@ function installLanguagePicker() {
     select.appendChild(option);
   });
   select.addEventListener('change', () => {
-    const slug = window.location.pathname.split('/').filter(Boolean).pop();
+    localStorage.setItem(languageKey, select.value);
     editor.value = templateFor(slug, select.value);
     editor.dispatchEvent(new Event('input', { bubbles: true }));
     editor.focus();
