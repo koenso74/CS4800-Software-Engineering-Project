@@ -58,6 +58,8 @@ test('serves every problem from the shared catalog', async () => {
   const result = await request('/api/problems');
   assert.equal(result.response.status, 200);
   assert.deepEqual(result.data.map(problem => problem.slug), sharedProblems.map(problem => problem.slug));
+  assert.equal(sharedProblems.length, 13);
+  assert.ok(sharedProblems.every(problem => problem.hints.every(hint => !/javascript/i.test(hint))));
 });
 
 test('does not expose solutions and returns visible cases for empty submissions', async () => {
