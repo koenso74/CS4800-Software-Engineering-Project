@@ -50,7 +50,10 @@ const pythonCalls={
   factorial:input=>`factorial(${input})`,
   'count-words':input=>`count_words(${input})`,
   'remove-duplicates':input=>`remove_duplicates(${input})`,
-  'two-sum':input=>`two_sum(${input})`
+  'two-sum':input=>`two_sum(${input})`,
+  'linear-search':input=>`linear_search(${input})`,
+  'sum-of-digits':input=>`sum_of_digits(${input})`,
+  'valid-anagram':input=>`is_anagram(${input})`
 };
 const javaCalls={
   'sum-of-array':input=>`System.out.println(sumArray(${input.replace(/^\[/,'new int[]{').replace(/\]$/,'}')}));`,
@@ -62,7 +65,10 @@ const javaCalls={
   factorial:input=>`System.out.println(factorial(${input}));`,
   'count-words':input=>`System.out.println(countWords(${input}));`,
   'remove-duplicates':input=>`System.out.println(Arrays.toString(removeDuplicates(${input.replace(/^\[/,'new int[]{').replace(/\]$/,'}')})));`,
-  'two-sum':input=>{const [nums,target]=input.split(/],\s*/);return `System.out.println(Arrays.toString(twoSum(new int[]{${nums.slice(1)}}, ${target})));`;}
+  'two-sum':input=>{const [nums,target]=input.split(/],\s*/);return `System.out.println(Arrays.toString(twoSum(new int[]{${nums.slice(1)}}, ${target})));`},
+  'linear-search':input=>{const [nums,target]=input.split(/],\s*/);return `System.out.println(linearSearch(new int[]{${nums.slice(1)}}, ${target}));`},
+  'sum-of-digits':input=>`System.out.println(sumOfDigits(${input}));`,
+  'valid-anagram':input=>{const [first,second]=input.split(/,\s*/);return `System.out.println(isAnagram(${first}, ${second}));`}
 };
 const cppCalls={
   'sum-of-array':input=>`cout << sumArray(${input.replace(/^\[/,'{').replace(/\]$/,'}')}) << endl;`,
@@ -74,11 +80,14 @@ const cppCalls={
   factorial:input=>`cout << factorial(${input}) << endl;`,
   'count-words':input=>`cout << countWords(${input}) << endl;`,
   'remove-duplicates':input=>`printVector(removeDuplicates(${input.replace(/^\[/,'{').replace(/\]$/,'}') }));`,
-  'two-sum':input=>{const [nums,target]=input.split(/],\s*/);return `printVector(twoSum({${nums.slice(1)}}, ${target}));`;}
+  'two-sum':input=>{const [nums,target]=input.split(/],\s*/);return `printVector(twoSum({${nums.slice(1)}}, ${target}));`},
+  'linear-search':input=>{const [nums,target]=input.split(/],\s*/);return `cout << linearSearch({${nums.slice(1)}}, ${target}) << endl;`},
+  'sum-of-digits':input=>`cout << sumOfDigits(${input}) << endl;`,
+  'valid-anagram':input=>{const [first,second]=input.split(/,\s*/);return `cout << boolalpha << isAnagram(${first}, ${second}) << endl;`}
 };
 const languageCalls={java:javaCalls,cpp:cppCalls};
 function normalizedOutput(value){return String(value||'').trim().replace(/\s+/g,' ');}
-const jsCalls={ 'sum-of-array':input=>`sumArray(${input})`, 'reverse-a-string':input=>`reverseString(${input})`, 'fizzbuzz-simple':input=>`fizzBuzz(${input})`, 'find-maximum':input=>`findMax(${input})`, 'palindrome-check':input=>`isPalindrome(${input})`, 'count-vowels':input=>`countVowels(${input})`, 'factorial':input=>`factorial(${input})`, 'count-words':input=>`countWords(${input})`, 'remove-duplicates':input=>`removeDuplicates(${input})`, 'two-sum':input=>`twoSum(${input})` };
+const jsCalls={ 'sum-of-array':input=>`sumArray(${input})`, 'reverse-a-string':input=>`reverseString(${input})`, 'fizzbuzz-simple':input=>`fizzBuzz(${input})`, 'find-maximum':input=>`findMax(${input})`, 'palindrome-check':input=>`isPalindrome(${input})`, 'count-vowels':input=>`countVowels(${input})`, 'factorial':input=>`factorial(${input})`, 'count-words':input=>`countWords(${input})`, 'remove-duplicates':input=>`removeDuplicates(${input})`, 'two-sum':input=>`twoSum(${input})`, 'linear-search':input=>`linearSearch(${input})`, 'sum-of-digits':input=>`sumOfDigits(${input})`, 'valid-anagram':input=>`isAnagram(${input})` };
 async function runJavaScriptCases(slug, code, cases) { const call=jsCalls[slug]; if(!call) return {passed:false,tests:0,total:cases.length,cases:cases.map(([input,expected])=>({input,expected,passed:false})),message:'JavaScript test harness is not available for this problem yet.'}; const results=[]; for(const [input,expected] of cases){const program=`${code}\nconsole.log(JSON.stringify(${call(input)}));`;const run=await runExternal(program,'javascript');results.push({input,expected,passed:run.passed&&normalizedOutput(run.output)===normalizedOutput(expected),output:run.output});} const passed=results.every(test=>test.passed); return {passed,tests:results.filter(test=>test.passed).length,total:results.length,cases:results,output:results.map(test=>test.output).filter(Boolean).join('\n'),message:passed?'All tests passed! Nice work.':'Not quite yet — review the failing test cases and try another iteration.'}; }
 function outputsMatch(actual, expected) { const left=normalizedOutput(actual); const right=normalizedOutput(expected); if(left===right) return true; try { return JSON.stringify(JSON.parse(left))===JSON.stringify(JSON.parse(right)); } catch {} const unquoted=value=>value.replace(/["']/g,''); return left.replace(/^['"]|['"]$/g,'')===right.replace(/^['"]|['"]$/g,'')||unquoted(left)===unquoted(right); }
 async function runLanguageCases(slug, code, language, cases) { const pythonCall=pythonCalls[slug]; const sumSpec=slug==='sum-of-array'?sumLanguageCalls[language]:null; const languageCall=languageCalls[language]?.[slug]; if(language==='python'&&pythonCall){const results=[];for(const [input,expected] of cases){const program=`import json\n${code}\nprint(json.dumps(${pythonCall(input)}))`;const run=await runExternal(program,language);results.push({input,expected,passed:run.passed&&outputsMatch(run.output,expected),output:run.output});}const passed=results.every(test=>test.passed);return {passed,tests:results.filter(test=>test.passed).length,total:results.length,cases:results,output:results.map(test=>test.output).filter(Boolean).join('\n'),message:passed?'All tests passed! Nice work.':'Not quite yet — review the failing test cases and try another iteration.'};} if(languageCall){const pattern=language==='java'?/System\.out\.println\([^;]*\);/:/cout << [^;]+;/;const results=[];for(const [input,expected] of cases){const program=code.replace(pattern,languageCall(input));const run=await runExternal(program,language);results.push({input,expected,passed:run.passed&&outputsMatch(run.output,expected),output:run.output});}const passed=results.every(test=>test.passed);return {passed,tests:results.filter(test=>test.passed).length,total:results.length,cases:results,output:results.map(test=>test.output).filter(Boolean).join('\n'),message:passed?'All tests passed! Nice work.':'Not quite yet — review the failing test cases and try another iteration.'};} if(sumSpec) {const results=[];for(const [input,expected] of cases){const program=code.replace(sumSpec.pattern,sumSpec.call(input));const run=await runExternal(program,language);results.push({input,expected,passed:run.passed&&outputsMatch(run.output,expected),output:run.output});}const passed=results.every(test=>test.passed);return {passed,tests:results.filter(test=>test.passed).length,total:results.length,cases:results,output:results.map(test=>test.output).filter(Boolean).join('\n'),message:passed?'All tests passed! Nice work.':'Not quite yet — review the failing test cases and try another iteration.'};} return {passed:false,tests:0,total:cases.length,cases:cases.map(([input,expected])=>({input,expected,passed:false})),message:`${language} test harness is not available for this problem yet.`}; }

@@ -6,7 +6,7 @@ test('home page fits the viewport and opens the problem list', async ({ page }) 
   expect(await page.evaluate(() => document.documentElement.scrollHeight <= window.innerHeight)).toBe(true);
   await page.getByRole('link', { name: /start climbing/i }).click();
   await expect(page).toHaveURL(/\/problems$/);
-  await expect(page.getByText('10 curated climbs')).toBeVisible();
+  await expect(page.getByText('13 curated climbs')).toBeVisible();
 });
 
 test('language picker, tab indentation, and visible test cases work in the editor', async ({ page }) => {
