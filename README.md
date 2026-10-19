@@ -27,7 +27,16 @@ Run the API checks with:
 npm test
 ```
 
-The tests cover registration, login failures, protected progress, problem filtering, catalog consistency, solution privacy, and editor workflow contracts. They use the in-memory demo store and do not require MongoDB. A real browser runner should be added when the project adopts Playwright or another browser test dependency.
+The tests cover registration, login failures, protected progress, problem filtering, catalog consistency, solution privacy, and editor workflow contracts. They use the in-memory demo store and do not require MongoDB.
+
+Run the browser tests with:
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
+The browser suite starts the local API and Vite app automatically and checks the landing page, problem navigation, language switching, Tab indentation, and visible test-case feedback.
 
 ## Vercel
 
