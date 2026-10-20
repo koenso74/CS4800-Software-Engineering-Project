@@ -14,6 +14,24 @@ export const problems = [
   { slug: 'valid-anagram', title: 'Valid Anagram', topic: 'Strings', difficulty: 'Intermediate', time: '15 min', description: 'Return true when two strings contain the same letters with the same frequencies.', primer: 'An anagram keeps character counts but changes order. Compare frequency maps instead of comparing positions.', starter: 'function isAnagram(first, second) {\n  // your code here\n}', solution: 'function isAnagram(first, second) {\n  if (first.length !== second.length) return false;\n  const counts = {};\n  for (const char of first) counts[char] = (counts[char] || 0) + 1;\n  for (const char of second) { if (!counts[char]) return false; counts[char]--; }\n  return true;\n}', explanation: 'Count every character in the first string, then consume those counts while scanning the second.', hints: ['Different lengths cannot be anagrams.', 'Count each character in the first string.', 'Decrease counts while reading the second string.'] }
 ];
 
+const beginnerPrimers = {
+  'sum-of-array': 'You need to visit every number and keep one answer as you go. Start the total at 0, add each number to it, then return the total.',
+  'reverse-a-string': 'The first character should move to the end, and the last character should move to the beginning. Work with the text one character at a time, then build a new string.',
+  'fizzbuzz-simple': 'Your loop decides what to put in the answer for each number. A number divisible by both 3 and 5 needs “FizzBuzz”, so check that case before checking 3 or 5 alone.',
+  'find-maximum': 'Imagine keeping score for the largest number seen so far. Start with the first number, compare later numbers with it, and replace your best answer when you find a larger one.',
+  'palindrome-check': 'Words like “racecar” look the same from either direction. Create the backwards version of the text and check whether it matches the original.',
+  'count-vowels': 'This is a counting problem. Start at 0, look at each character, and add 1 only when it is a, e, i, o, or u. Treat uppercase and lowercase letters the same.',
+  factorial: 'A factorial multiplies all the whole numbers from 1 through n. Keep a running product starting at 1. For n = 0, the answer is also 1.',
+  'count-words': 'A sentence may have extra spaces at the beginning, end, or between words. Clean up the outside first, then separate the text wherever there is whitespace and count the pieces.',
+  'remove-duplicates': 'You need a final list and a way to remember what you have already seen. Keep the first copy of a value and skip later copies.',
+  'two-sum': 'For each number, ask: “What number would complete the target?” Save numbers you have already visited. If that needed number is saved, you found the pair and their indices.',
+  'linear-search': 'Start at the first position and check each value in order. Stop when you find the target. If you reach the end, return -1 to mean “not found.”',
+  'sum-of-digits': 'For 1234, the last digit is 4. Add it to your total, remove it, and repeat with 123. Remainder by 10 gets the last digit; dividing by 10 removes it.',
+  'valid-anagram': '“listen” and “silent” use the same letters in a different order. Count each letter in the first string, then use those counts while checking the second.'
+};
+
+for (const problem of problems) problem.primer = beginnerPrimers[problem.slug] || problem.primer;
+
 export const visibleCases = {
   'sum-of-array': [['[1, 2, 3]', '6'], ['[]', '0'], ['[5]', '5'], ['[-1, 1, 0]', '0']],
   'reverse-a-string': [['"code"', '"edoc"'], ['""', '""'], ['"hello"', '"olleh"']],
