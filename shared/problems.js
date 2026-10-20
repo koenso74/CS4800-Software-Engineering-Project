@@ -15,19 +15,19 @@ export const problems = [
 ];
 
 const beginnerPrimers = {
-  'sum-of-array': 'You need to visit every number and keep one answer as you go. Start the total at 0, add each number to it, then return the total.',
-  'reverse-a-string': 'The first character should move to the end, and the last character should move to the beginning. Work with the text one character at a time, then build a new string.',
-  'fizzbuzz-simple': 'Your loop decides what to put in the answer for each number. A number divisible by both 3 and 5 needs “FizzBuzz”, so check that case before checking 3 or 5 alone.',
-  'find-maximum': 'Imagine keeping score for the largest number seen so far. Start with the first number, compare later numbers with it, and replace your best answer when you find a larger one.',
-  'palindrome-check': 'Words like “racecar” look the same from either direction. Create the backwards version of the text and check whether it matches the original.',
-  'count-vowels': 'This is a counting problem. Start at 0, look at each character, and add 1 only when it is a, e, i, o, or u. Treat uppercase and lowercase letters the same.',
-  factorial: 'A factorial multiplies all the whole numbers from 1 through n. Keep a running product starting at 1. For n = 0, the answer is also 1.',
-  'count-words': 'A sentence may have extra spaces at the beginning, end, or between words. Clean up the outside first, then separate the text wherever there is whitespace and count the pieces.',
-  'remove-duplicates': 'You need a final list and a way to remember what you have already seen. Keep the first copy of a value and skip later copies.',
-  'two-sum': 'For each number, ask: “What number would complete the target?” Save numbers you have already visited. If that needed number is saved, you found the pair and their indices.',
-  'linear-search': 'Start at the first position and check each value in order. Stop when you find the target. If you reach the end, return -1 to mean “not found.”',
-  'sum-of-digits': 'For 1234, the last digit is 4. Add it to your total, remove it, and repeat with 123. Remainder by 10 gets the last digit; dividing by 10 removes it.',
-  'valid-anagram': '“listen” and “silent” use the same letters in a different order. Count each letter in the first string, then use those counts while checking the second.'
+  'sum-of-array': 'This problem practices the accumulator pattern: keeping one value that represents the work completed so far while moving through a collection.',
+  'reverse-a-string': 'This problem practices string traversal and order. A string is an ordered sequence of characters, and reversing it changes the position of every character.',
+  'fizzbuzz-simple': 'This problem combines iteration with conditional logic. The order of conditions matters when one case can also match another case.',
+  'find-maximum': 'This problem practices a one-pass scan and a best-so-far value. The same pattern can find a minimum, maximum, or another strongest candidate.',
+  'palindrome-check': 'This problem uses symmetry. A palindrome has matching characters at equal distances from the two ends of the string.',
+  'count-vowels': 'This problem combines character traversal, classification, and counting. Each character is checked against a small group of allowed values.',
+  factorial: 'This problem uses repeated multiplication in a loop. Factorial is also an example of a product that can be described recursively.',
+  'count-words': 'This problem practices basic string normalization and tokenization: cleaning text and turning it into meaningful pieces.',
+  'remove-duplicates': 'This problem introduces membership tracking. A set is useful when you need to know quickly whether a value has appeared before.',
+  'two-sum': 'This problem introduces complement lookup. A map can connect a value to useful information about where it appeared, avoiding a nested scan.',
+  'linear-search': 'This problem practices sequential search. It is the simplest search strategy and works without requiring the input to be sorted.',
+  'sum-of-digits': 'This problem practices decomposing a number into individual digits using base-10 arithmetic and repetition.',
+  'valid-anagram': 'This problem uses frequency counting. Two strings are anagrams when their character-frequency profiles are identical.'
 };
 
 for (const problem of problems) problem.primer = beginnerPrimers[problem.slug] || problem.primer;

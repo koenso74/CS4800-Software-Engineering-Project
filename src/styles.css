@@ -136,3 +136,15 @@ body{font-size:16px;color:#1b2c26;background:#f7f9f5}nav{height:88px;border-bott
 .solution-teaching pre{margin:10px 0 14px;max-height:360px;overflow:auto;border:1px solid #253d31;border-radius:9px;padding:16px;background:#17231f;color:#dbe7c1;font:13px/1.7 'DM Mono',monospace;white-space:pre-wrap}
 .solution-tip{font-size:13px;color:#718078}
 @media(max-width:480px){.solution-comparison{padding:16px}.solution-teaching pre{font-size:12px;padding:13px}}
+
+/* Give beginners more room to read the starter code and build an answer. */
+.editor{min-height:420px}
+@media(max-width:700px){.editor{min-height:340px}}
+@media(max-width:480px){.editor{min-height:280px}}
+.detail{max-width:1280px}
+.detail-layout{grid-template-columns:minmax(0,1fr) 270px;gap:42px}
+.detail-layout>section{width:100%;min-width:0}
+.editor{display:block;width:100%;white-space:pre;overflow-x:auto;overflow-y:auto;tab-size:2}
+.hint-intro{margin:0 0 8px;color:#718078;font-size:13px;line-height:1.5}
+@media(max-width:1080px){.detail{max-width:1100px}.detail-layout{grid-template-columns:minmax(0,1fr) 250px;gap:32px}}
+@media(max-width:900px){.detail-layout{grid-template-columns:1fr}.detail aside{display:block}}
