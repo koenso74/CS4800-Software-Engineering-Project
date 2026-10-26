@@ -62,8 +62,8 @@ function templateFor(slug, language) {
 }
 
 const languages = [
-  ['javascript', 'JavaScript'],
   ['python', 'Python'],
+  ['javascript', 'JavaScript'],
   ['java', 'Java'],
   ['cpp', 'C++']
 ];
@@ -78,7 +78,7 @@ function installLanguagePicker() {
   select.setAttribute('aria-label', 'Programming language');
   select.title = 'Choose a programming language';
   const slug = window.location.pathname.split('/').filter(Boolean).pop();
-  const languageKey = `cc_language_${slug}`;
+  const languageKey = `cc_language_v2_${slug}`;
   languages.forEach(([value, text]) => {
     const option = document.createElement('option');
     option.value = value;

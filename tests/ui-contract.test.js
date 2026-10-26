@@ -15,7 +15,7 @@ test('editor workflow contracts remain wired', () => {
   assert.match(mainSource, /path="\/problems\/:slug"/);
   assert.match(editorSource, /event\.key !== 'Tab'/);
   assert.match(editorSource, /language-select/);
-  assert.match(editorSource, /cc_language_\$\{slug\}/);
+  assert.match(editorSource, /cc_language(?:_v2)?_\$\{slug\}/);
   assert.match(editorSource, /localStorage\.setItem\(languageKey/);
   assert.match(editorSource, /api\/submissions\/run/);
   assert.match(editorSource, /test-cases/);
