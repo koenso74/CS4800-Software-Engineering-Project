@@ -57,6 +57,39 @@ const pythonSolutions = {
   'valid-anagram': 'def is_anagram(first, second):\n    return sorted(first) == sorted(second)'
 };
 
+const languageSolutions = {
+  java: {
+    'sum-of-array': 'static int sumArray(int[] nums) {\n    int total = 0;\n    for (int num : nums) total += num;\n    return total;\n}',
+    'reverse-a-string': 'static String reverseString(String text) {\n    return new StringBuilder(text).reverse().toString();\n}',
+    'fizzbuzz-simple': 'static String[] fizzBuzz(int n) {\n    String[] result = new String[n];\n    for (int i = 1; i <= n; i++) {\n        if (i % 15 == 0) result[i - 1] = "FizzBuzz";\n        else if (i % 3 == 0) result[i - 1] = "Fizz";\n        else if (i % 5 == 0) result[i - 1] = "Buzz";\n        else result[i - 1] = String.valueOf(i);\n    }\n    return result;\n}',
+    'find-maximum': 'static int findMax(int[] nums) {\n    int largest = nums[0];\n    for (int num : nums) if (num > largest) largest = num;\n    return largest;\n}',
+    'palindrome-check': 'static boolean isPalindrome(String text) {\n    return text.equals(new StringBuilder(text).reverse().toString());\n}',
+    'count-vowels': 'static int countVowels(String text) {\n    int count = 0;\n    for (char ch : text.toLowerCase().toCharArray())\n        if ("aeiou".indexOf(ch) >= 0) count++;\n    return count;\n}',
+    factorial: 'static long factorial(int n) {\n    long result = 1;\n    for (int number = 2; number <= n; number++) result *= number;\n    return result;\n}',
+    'count-words': 'static int countWords(String sentence) {\n    String trimmed = sentence.trim();\n    return trimmed.isEmpty() ? 0 : trimmed.split("\\\\s+").length;\n}',
+    'remove-duplicates': 'static int[] removeDuplicates(int[] nums) {\n    Set<Integer> seen = new LinkedHashSet<>();\n    for (int num : nums) seen.add(num);\n    return seen.stream().mapToInt(Integer::intValue).toArray();\n}',
+    'two-sum': 'static int[] twoSum(int[] nums, int target) {\n    Map<Integer, Integer> seen = new HashMap<>();\n    for (int i = 0; i < nums.length; i++) {\n        int needed = target - nums[i];\n        if (seen.containsKey(needed)) return new int[]{seen.get(needed), i};\n        seen.put(nums[i], i);\n    }\n    return new int[0];\n}',
+    'linear-search': 'static int linearSearch(int[] nums, int target) {\n    for (int i = 0; i < nums.length; i++)\n        if (nums[i] == target) return i;\n    return -1;\n}',
+    'sum-of-digits': 'static int sumOfDigits(int n) {\n    int total = 0;\n    while (n > 0) { total += n % 10; n /= 10; }\n    return total;\n}',
+    'valid-anagram': 'static boolean isAnagram(String first, String second) {\n    char[] firstChars = first.toCharArray();\n    char[] secondChars = second.toCharArray();\n    Arrays.sort(firstChars);\n    Arrays.sort(secondChars);\n    return Arrays.equals(firstChars, secondChars);\n}'
+  },
+  cpp: {
+    'sum-of-array': 'int sumArray(const vector<int>& nums) {\n    int total = 0;\n    for (int num : nums) total += num;\n    return total;\n}',
+    'reverse-a-string': 'string reverseString(string text) {\n    reverse(text.begin(), text.end());\n    return text;\n}',
+    'fizzbuzz-simple': 'vector<string> fizzBuzz(int n) {\n    vector<string> result;\n    for (int i = 1; i <= n; i++) {\n        if (i % 15 == 0) result.push_back("FizzBuzz");\n        else if (i % 3 == 0) result.push_back("Fizz");\n        else if (i % 5 == 0) result.push_back("Buzz");\n        else result.push_back(to_string(i));\n    }\n    return result;\n}',
+    'find-maximum': 'int findMax(const vector<int>& nums) {\n    int largest = nums[0];\n    for (int num : nums) if (num > largest) largest = num;\n    return largest;\n}',
+    'palindrome-check': 'bool isPalindrome(string text) {\n    string reversed = text;\n    reverse(reversed.begin(), reversed.end());\n    return text == reversed;\n}',
+    'count-vowels': 'int countVowels(string text) {\n    int count = 0;\n    for (char ch : text)\n        if (string("aeiouAEIOU").find(ch) != string::npos) count++;\n    return count;\n}',
+    factorial: 'long long factorial(int n) {\n    long long result = 1;\n    for (int number = 2; number <= n; number++) result *= number;\n    return result;\n}',
+    'count-words': 'int countWords(string sentence) {\n    stringstream words(sentence);\n    int count = 0;\n    string word;\n    while (words >> word) count++;\n    return count;\n}',
+    'remove-duplicates': 'vector<int> removeDuplicates(const vector<int>& nums) {\n    set<int> seen;\n    vector<int> result;\n    for (int num : nums)\n        if (seen.insert(num).second) result.push_back(num);\n    return result;\n}',
+    'two-sum': 'vector<int> twoSum(const vector<int>& nums, int target) {\n    unordered_map<int, int> seen;\n    for (int i = 0; i < nums.size(); i++) {\n        int needed = target - nums[i];\n        if (seen.count(needed)) return {seen[needed], i};\n        seen[nums[i]] = i;\n    }\n    return {};\n}',
+    'linear-search': 'int linearSearch(const vector<int>& nums, int target) {\n    for (int i = 0; i < nums.size(); i++)\n        if (nums[i] == target) return i;\n    return -1;\n}',
+    'sum-of-digits': 'int sumOfDigits(int n) {\n    int total = 0;\n    while (n > 0) { total += n % 10; n /= 10; }\n    return total;\n}',
+    'valid-anagram': 'bool isAnagram(string first, string second) {\n    sort(first.begin(), first.end());\n    sort(second.begin(), second.end());\n    return first == second;\n}'
+  }
+};
+
 function templateFor(slug, language) {
   return problemTemplates[slug]?.[language] || additionalLanguageTemplates[slug]?.[language] || templates[language];
 }
@@ -144,7 +177,7 @@ document.addEventListener('click', async event => {
     const selectedLanguage = document.querySelector('.language-select')?.value || 'python';
     const languageNames = Object.fromEntries(languages);
     const languageName = languageNames[selectedLanguage] || selectedLanguage;
-    const exampleSolution = selectedLanguage === 'python' ? pythonSolutions[slug] : result.solution;
+    const exampleSolution = selectedLanguage === 'python' ? pythonSolutions[slug] : languageSolutions[selectedLanguage]?.[slug] || result.solution;
     const comparison = result.passed && exampleSolution ? `<details class="solution-comparison" open><summary>Best solution in ${escapeHtml(languageName)}: how it works</summary><div class="solution-teaching"><p class="solution-label">The idea in plain English</p><p>${escapeHtml(result.explanation || 'This solution visits the input and builds the answer step by step.')}</p><p class="solution-label">Example ${escapeHtml(languageName)} solution</p><pre>${escapeHtml(exampleSolution)}</pre><p class="solution-tip">There can be many correct solutions. This is one clear reference approach; your code can look different and still be correct.</p></div></details>` : '';
     resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests !== undefined ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}${cases}${output}${comparison}`;
   } catch { window.alert('The code runner is unavailable. Please try again in a moment.'); }
