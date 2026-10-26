@@ -41,6 +41,22 @@ const additionalLanguageTemplates = {
   'valid-anagram': { java: 'public class Main {\n    static boolean isAnagram(String first, String second) {\n        // your code here\n        return false;\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isAnagram("listen", "silent"));\n    }\n}', cpp: '#include <bits/stdc++.h>\nusing namespace std;\n\nbool isAnagram(string first, string second) {\n    // your code here\n    return false;\n}\n\nint main() {\n    cout << boolalpha << isAnagram("listen", "silent") << endl;\n    return 0;\n}' }
 };
 
+const pythonSolutions = {
+  'sum-of-array': 'def sum_array(nums):\n    total = 0\n    for num in nums:\n        total += num\n    return total',
+  'reverse-a-string': 'def reverse_string(text):\n    result = ""\n    for char in text:\n        result = char + result\n    return result',
+  'fizzbuzz-simple': 'def fizz_buzz(n):\n    result = []\n    for number in range(1, n + 1):\n        if number % 15 == 0:\n            result.append("FizzBuzz")\n        elif number % 3 == 0:\n            result.append("Fizz")\n        elif number % 5 == 0:\n            result.append("Buzz")\n        else:\n            result.append(number)\n    return result',
+  'find-maximum': 'def find_max(nums):\n    largest = nums[0]\n    for num in nums[1:]:\n        if num > largest:\n            largest = num\n    return largest',
+  'palindrome-check': 'def is_palindrome(text):\n    return text == text[::-1]',
+  'count-vowels': 'def count_vowels(text):\n    vowels = "aeiou"\n    return sum(1 for char in text.lower() if char in vowels)',
+  factorial: 'def factorial(n):\n    result = 1\n    for number in range(2, n + 1):\n        result *= number\n    return result',
+  'count-words': 'def count_words(sentence):\n    return len(sentence.split())',
+  'remove-duplicates': 'def remove_duplicates(nums):\n    seen = set()\n    result = []\n    for num in nums:\n        if num not in seen:\n            seen.add(num)\n            result.append(num)\n    return result',
+  'two-sum': 'def two_sum(nums, target):\n    seen = {}\n    for index, num in enumerate(nums):\n        needed = target - num\n        if needed in seen:\n            return [seen[needed], index]\n        seen[num] = index\n    return []',
+  'linear-search': 'def linear_search(nums, target):\n    for index, num in enumerate(nums):\n        if num == target:\n            return index\n    return -1',
+  'sum-of-digits': 'def sum_of_digits(n):\n    total = 0\n    while n > 0:\n        total += n % 10\n        n //= 10\n    return total',
+  'valid-anagram': 'def is_anagram(first, second):\n    return sorted(first) == sorted(second)'
+};
+
 function templateFor(slug, language) {
   return problemTemplates[slug]?.[language] || additionalLanguageTemplates[slug]?.[language] || templates[language];
 }
@@ -63,13 +79,15 @@ function installLanguagePicker() {
   select.title = 'Choose a programming language';
   const slug = window.location.pathname.split('/').filter(Boolean).pop();
   const languageKey = `cc_language_${slug}`;
-  select.value = localStorage.getItem(languageKey) || 'javascript';
   languages.forEach(([value, text]) => {
     const option = document.createElement('option');
     option.value = value;
     option.textContent = text;
     select.appendChild(option);
   });
+  select.value = localStorage.getItem(languageKey) || 'python';
+  editor.value = templateFor(slug, select.value);
+  editor.dispatchEvent(new Event('input', { bubbles: true }));
   select.addEventListener('change', () => {
     localStorage.setItem(languageKey, select.value);
     editor.value = templateFor(slug, select.value);
@@ -123,7 +141,11 @@ document.addEventListener('click', async event => {
     const cases = result.cases?.length ? `<div class="test-cases"><strong>Test cases</strong>${result.cases.map(test => `<div class="test-case"><span class="case-status ${test.passed === false ? 'failed' : 'passed'}">${test.passed === false ? '×' : '✓'}</span><code>${test.input}</code><span>→ ${test.expected}</span></div>`).join('')}</div>` : '';
     const output = result.output ? `<pre class="runner-output">${result.output}</pre>` : '';
     const escapeHtml = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-    const comparison = result.passed && result.solution ? `<details class="solution-comparison" open><summary>Best solution: how it works</summary><div class="solution-teaching"><p class="solution-label">The idea in plain English</p><p>${escapeHtml(result.explanation || 'This solution visits the input and builds the answer step by step.')}</p><p class="solution-label">Example solution</p><pre>${escapeHtml(result.solution)}</pre><p class="solution-tip">Compare this with your code: look for the same idea, not identical formatting.</p></div></details>` : '';
+    const selectedLanguage = document.querySelector('.language-select')?.value || 'python';
+    const languageNames = Object.fromEntries(languages);
+    const languageName = languageNames[selectedLanguage] || selectedLanguage;
+    const exampleSolution = selectedLanguage === 'python' ? pythonSolutions[slug] : result.solution;
+    const comparison = result.passed && exampleSolution ? `<details class="solution-comparison" open><summary>Best solution in ${escapeHtml(languageName)}: how it works</summary><div class="solution-teaching"><p class="solution-label">The idea in plain English</p><p>${escapeHtml(result.explanation || 'This solution visits the input and builds the answer step by step.')}</p><p class="solution-label">Example ${escapeHtml(languageName)} solution</p><pre>${escapeHtml(exampleSolution)}</pre><p class="solution-tip">There can be many correct solutions. This is one clear reference approach; your code can look different and still be correct.</p></div></details>` : '';
     resultBox.innerHTML = `<b>${result.passed ? '✓ ' : '○ '}${result.message}</b>${result.tests !== undefined ? `<span>${result.tests}/${result.total} tests passed</span>` : ''}${cases}${output}${comparison}`;
   } catch { window.alert('The code runner is unavailable. Please try again in a moment.'); }
   button.disabled = false;
